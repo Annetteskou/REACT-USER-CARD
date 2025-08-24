@@ -1,4 +1,4 @@
-import User from "./User";
+import UserCard from "./UserCard";
 
 /**
  * UserList-komponenten modtager et array af users som prop
@@ -8,10 +8,11 @@ function UserList({ users }) {
   return (
     <div className="grid">
       {users.map((user) => (
-        <User key={user.id} user={user} />
+        <UserCard user={user} key={user.id} />
       ))}
     </div>
   );
 }
 
 export default UserList;
+

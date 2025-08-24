@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import UserList from "./components/UserList";
 import Footer from "./components/Footer";
+import AppInfo from "./components/AppInfo";
 import "./index.css";
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
   return (
     <div className="page">
       <Header />
+
+
+      <AppInfo userCount={users.length} />
 
       {loading ? (
         <p className="loading">Loading...</p>
