@@ -14,6 +14,11 @@ function UserList({ users, onDelete }) {
   );
 }
 
+UserList.defaultProps = {
+  users: [],
+  onDelete: null,
+};
+
 export default UserList;
 
 
