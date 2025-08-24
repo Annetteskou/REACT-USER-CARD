@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import User from "./components/User";
-
+import "./index.css";
 function App() {
   const [users, setUsers] = useState([]);
 
@@ -18,8 +18,8 @@ function App() {
     <div className="page">
       <h1>Users</h1>
       <section className="grid">
-        {users.map(user => (
-          <User key={user.id} name={user.name} mail={user.mail} image={user.image} />
+        {users.map((user) => (
+          <User key={user.id} user={user} />
         ))}
       </section>
     </div>
