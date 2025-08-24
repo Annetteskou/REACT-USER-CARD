@@ -1,10 +1,12 @@
-function UserCard({ user }) {
+function UserCard({ user, onDelete }) {
   return (
     <div className="user-card">
       <img src={user.image} alt={user.name} className="user-image" />
-      <h2 className="user-name">{user.name}</h2>
-      <p className="user-mail">{user.mail}</p>
-      <p className="user-title">{user.title}</p>
+      <h2>{user.name}</h2>
+      <p>{user.mail}</p>
+      <p>{user.title}</p>
+
+      <button onClick={() => onDelete(user.id)}>Slet</button>
     </div>
   );
 }
