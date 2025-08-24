@@ -1,7 +1,7 @@
 /**
  * User-komponenten modtager hele user-objektet som prop.
  * Vi bruger useState til antal likes og til at styre visning af detaljer.
- * useEffect bruges her til at logge antal likes hver gang det ændres.
+ * useEffect bruges her til at logge antal likes og vise besked ved 10 likes.
  */
 import { useState, useEffect } from "react";
 
@@ -20,9 +20,16 @@ export default function User({ user }) {
   const [showDetails, setShowDetails] = useState(true);
 
   // useEffect kører hver gang 'likes' ændres
- useEffect(() => {
-   console.log("Likes:", likes);
- }, [likes]);// dependency array = kører kun, når 'likes' ændres
+  useEffect(() => {
+    console.log("Likes:", likes);
+  }, [likes]); // dependency array = kører kun, når 'likes' ændres
+
+  // Alert når likes når 10
+  useEffect(() => {
+    if (likes === 10) {
+      alert(`${name} har nået 10 likes!`); // ${name} = personen
+    }
+  }, [likes]);
 
   return (
     <div className="user-card">
