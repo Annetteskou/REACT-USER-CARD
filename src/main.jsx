@@ -5,9 +5,9 @@ import App from "./App.jsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter basename={import.meta.env.DEV ? "/" : "/REACT-USER-CARD/"}>
       <App />
     </BrowserRouter>
-  </StrictMode>
+  </React.StrictMode>
 );
