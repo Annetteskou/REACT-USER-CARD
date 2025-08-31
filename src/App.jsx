@@ -1,48 +1,67 @@
+/**
+ * Refleksion (Step 9.4):
+ *
+ * JSONPlaceholder returnerer altid status 201 for POST requests,
+ * fordi det er et "fake" API, som kun simulerer serveradfærd.
+ * Data gemmes ikke permanent på serveren – alle POST, PUT og DELETE
+ * requests bliver accepteret, men påvirker ikke det rigtige dataset.
+ *
+ * Forskellen mellem lokal vs. server-data:
+ * - Lokalt: ændringer opdateres kun i React state. Når siden genindlæses, forsvinder data.
+ * - Rigtig server: ændringer gemmes på serveren og kan hentes igen ved næste request.
+ *
+ * Derfor bruger vi crypto.randomUUID() til at generere unikke IDs lokalt,
+ * i stedet for at stole på serverens ID, da JSONPlaceholder ikke gemmer brugerne.
+ */
+
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import UserList from "./components/UserList";
+import PostList from "./components/PostList";
+import SimpleUserPosts from "./components/SimpleUserPosts";
 import Footer from "./components/Footer";
 import AppInfo from "./components/AppInfo";
 import "./index.css";
 
 function App() {
-  const [error, setError] = useState(null); // Holder fejlbesked
+  const [darkMode, setDarkMode] = useState(false); // Dark mode
+  const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(""); // State til søgning
-  const [selectedTitle, setSelectedTitle] = useState(""); // "" = ingen filter
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTitle, setSelectedTitle] = useState("");
 
-useEffect(() => {
-  async function fetchUsers() {
-    try {
-      const response = await fetch(
-        "https://raw.githubusercontent.com/cederdorff/race/master/data/users.json"
-      );
+  const toggleDarkMode = () => setDarkMode(!darkMode);
 
-      if (!response.ok) {
-        throw new Error("Kunne ikke hente brugere");
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const response = await fetch(
+          "https://raw.githubusercontent.com/cederdorff/race/master/data/users.json"
+        );
+
+        if (!response.ok) throw new Error("Kunne ikke hente brugere");
+
+        const data = await response.json();
+        setUsers(data);
+        setError(null);
+      } catch (err) {
+        console.error("Fejl ved hentning af users:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-
-      const data = await response.json();
-      setUsers(data);
-      setError(null); // ryd tidligere fejl
-    } catch (err) {
-      console.error("Fejl ved hentning af users:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
-  }
 
-  fetchUsers();
-}, []);
+    fetchUsers();
+  }, []);
 
   function handleSubmit(e) {
-    e.preventDefault(); // Forhindrer siden i at genindlæses
+    e.preventDefault();
     const form = e.target;
 
     const newUser = {
-      id: crypto.randomUUID(), // unik id til React key
+      id: crypto.randomUUID(),
       name: form.name.value,
       mail: form.mail.value,
       title: form.title.value,
@@ -50,14 +69,13 @@ useEffect(() => {
       age: form.age.value,
     };
 
-    setUsers([...users, newUser]); // Tilføjer den nye bruger til state
-    form.reset(); // Tømmer inputfelterne
+    setUsers([...users, newUser]);
+    form.reset();
   }
 
   function handleDeleteUser(id) {
     setUsers(users.filter((user) => user.id !== id));
   }
-  <UserList users={users} onDelete={handleDeleteUser} />;
 
   const filteredUsers = users
     .filter((user) =>
@@ -66,7 +84,26 @@ useEffect(() => {
     .filter((user) => selectedTitle === "" || user.title === selectedTitle);
 
   return (
-    <div className="page">
+    <div className={darkMode ? "page dark-mode" : "page"}>
+      {/* Dark Mode Toggle */}
+      <button
+        onClick={toggleDarkMode}
+        style={{
+          position: "fixed",
+          top: "20px",
+          right: "20px",
+          padding: "10px 15px",
+          borderRadius: "5px",
+          border: "none",
+          cursor: "pointer",
+          backgroundColor: darkMode ? "#f1f1f1" : "#333",
+          color: darkMode ? "#333" : "#fff",
+          zIndex: 1000,
+        }}
+      >
+        {darkMode ? "☀️ Lys Mode" : "🌙 Dark Mode"}
+      </button>
+
       <Header />
 
       <form onSubmit={handleSubmit}>
@@ -95,7 +132,6 @@ useEffect(() => {
         <option value="Developer">Developer</option>
         <option value="Designer">Designer</option>
         <option value="Manager">Manager</option>
-        {/* Tilføj flere titler efter behov */}
       </select>
 
       <p>
@@ -109,6 +145,12 @@ useEffect(() => {
       ) : (
         <UserList users={filteredUsers} onDelete={handleDeleteUser} />
       )}
+
+      {/* PostList med søgning */}
+      <PostList />
+
+      {/* SimpleUserPosts: kombinerer users og posts */}
+      <SimpleUserPosts />
 
       <Footer />
     </div>

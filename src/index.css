@@ -21,6 +21,7 @@ html {
   box-sizing: inherit;
 }
 
+/* ---------- Default body styling ---------- */
 body,
 html {
   background-color: var(--light-green);
@@ -31,6 +32,7 @@ html {
   line-height: 1.5;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s, color 0.3s; /* smooth transition */
 }
 
 /* ---------- Typography ---------- */
@@ -285,7 +287,7 @@ nav a.active {
 }
 
 .user-card:hover {
-  box-shadow: 0 8px 24px 0 var(--green);
+  box-shadow: 0 8px 24px 0 var(--text-color-dark);
   transform: scale(1.02);
 }
 
@@ -355,3 +357,93 @@ nav a.active {
   margin-top: 10px;
   grid-column: 2;
 }
+
+/* ---------- Dark Mode Styling ---------- */
+.page.dark-mode {
+  background-color: #121212;
+  color: var(--text-color-light);
+  margin-top: -35px;
+}
+
+.page.dark-mode input,
+.page.dark-mode textarea,
+.page.dark-mode select,
+.page.dark-mode button {
+  background-color: #1e1e1e;
+  color: var(--text-color-light);
+  box-shadow: 0 0px 1px hsla(0, 0%, 100%, 0.2), 0 1px 2px hsla(0, 0%, 100%, 0.2);
+  border: 1px solid #333;
+}
+
+.page.dark-mode input::placeholder,
+.page.dark-mode textarea::placeholder {
+  color: #bbb;
+}
+
+.page.dark-mode button {
+  background-color: #333;
+  color: #f1f1f1;
+}
+
+.page.dark-mode button:hover {
+  background-color: var(--light-green);
+  color: #121212;
+  ;
+}
+
+.page.dark-mode nav {
+  background-color: #1a1a1a;
+}
+
+.page.dark-mode nav a {
+  border-color: #555;
+  color: #f1f1f1;
+}
+
+.page.dark-mode nav a:hover,
+.page.dark-mode nav a.active {
+  background-color: #333;
+  color: var(--light-green);
+}
+
+.page.dark-mode .user-card {
+  background-color: #1e1e1e;
+  box-shadow: 1px 1px 8px rgba(255, 255, 255, 0.05);
+}
+
+.page.dark-mode .user-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 255, 0, 0.2);
+}
+
+.page.dark-mode .grid-filter {
+  background-color: #1e1e1e;
+  box-shadow: 1px 1px 8px rgba(255, 255, 255, 0.05);
+}
+
+.page.dark-mode .error-message {
+  color: #ff6b6b;
+}
+
+/* ---------- Post Knap Styling ---------- */
+/* Standard favorit-knap */
+.favorite-btn {
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+  background: var(--dark-green);
+  transition: color 0.3s, transform 0.2s;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Når post er favorit */
+.favorite-btn.favorite {
+  color: gold; /* stjernen bliver gul */
+  font-weight: bold;
+}
+
